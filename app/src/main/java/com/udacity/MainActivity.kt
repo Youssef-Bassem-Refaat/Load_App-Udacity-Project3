@@ -116,9 +116,9 @@ class MainActivity : AppCompatActivity() {
         downloadID =
             downloadManager.enqueue(request)
 
-        val cursor = downloadManager.query(DownloadManager.Query().setFilterById(downloadID))
-        if (cursor.moveToFirst()) {
-            when (cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) {
+        val cursorr = downloadManager.query(DownloadManager.Query().setFilterById(downloadID))
+        if (cursorr.moveToFirst()) {
+            when (cursorr.getColumnIndex(DownloadManager.COLUMN_STATUS)) {
                 DownloadManager.STATUS_FAILED -> {
                     downloadStatus = "Fail"
                     custom_button.buttonState = ButtonState.Completed
@@ -152,13 +152,13 @@ class MainActivity : AppCompatActivity() {
             pendingIntent
         )
 
-        val contentIntent = Intent(DownloadManager.ACTION_VIEW_DOWNLOADS).apply {
+        val contentFromIntent = Intent(DownloadManager.ACTION_VIEW_DOWNLOADS).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val contentPendingIntent = PendingIntent.getActivity(
             applicationContext,
             NOTIFICATION_ID,
-            contentIntent,
+            contentFromIntent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
