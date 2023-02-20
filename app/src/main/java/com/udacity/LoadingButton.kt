@@ -22,7 +22,7 @@ class LoadingButton @JvmOverloads constructor(
     private var textSize: Float = resources.getDimension(R.dimen.default_text_size)
     private var circleOffset = textSize / 2
 
-    private lateinit var titleButton: String
+    private lateinit var buttonTitle: String
 
     private var widthOfProgress = 0f
     private var progressCircle = 0f
@@ -36,11 +36,11 @@ class LoadingButton @JvmOverloads constructor(
     var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
         when(new) {
             ButtonState.Clicked -> {
-                titleButton = "Clicked"
+                buttonTitle = "Clicked"
                 invalidate()
             }
             ButtonState.Loading -> {
-                titleButton = resources.getString(R.string.button_loading)
+                buttonTitle = resources.getString(R.string.button_loading)
                 valueAnimator = ValueAnimator.ofFloat(0f, widthSize.toFloat())
                 valueAnimator.setDuration(5000)
                 valueAnimator.addUpdateListener { animation ->
@@ -63,7 +63,7 @@ class LoadingButton @JvmOverloads constructor(
                 valueAnimator.cancel()
                 widthOfProgress = 0f
                 progressCircle = 0f
-                titleButton = resources.getString(R.string.button_download)
+                buttonTitle = resources.getString(R.string.button_download)
                 invalidate()
             }
         }
@@ -76,7 +76,7 @@ class LoadingButton @JvmOverloads constructor(
     }
 
     init {
-        titleButton = "Download"
+        buttonTitle = "Download"
         context.withStyledAttributes(attrs, R.styleable.LoadingButton){
             buttonColor = getColor(R.styleable.LoadingButton_buttonColor, 0)
             loadingColor = getColor(R.styleable.LoadingButton_buttonLoadingColor, 0)
@@ -113,8 +113,8 @@ class LoadingButton @JvmOverloads constructor(
 
     private fun drawTitle(canvas: Canvas?) {
         paint.color = Color.WHITE
-        textWidth = paint.measureText(titleButton)
-        canvas?.drawText(titleButton, widthSize / 2 - textWidth / 2, heightSize / 2 - (paint.descent() + paint.ascent()) / 2, paint)
+        textWidth = paint.measureText(buttonTitle)
+        canvas?.drawText(buttonTitle, widthSize / 2 - textWidth / 2, heightSize / 2 - (paint.descent() + paint.ascent()) / 2, paint)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
