@@ -102,14 +102,15 @@ class LoadingButton @JvmOverloads constructor(
         canvas?.drawRect(0f, 0f, widthOfProgress, heightSize.toFloat(), paint)
     }
 
+
     private fun drawCircleProgress(canvas: Canvas?) {
-        //TODO: Draw circle progress animation
         canvas?.save()
         canvas?.translate(widthSize / 2 + textWidth / 2 + circleOffset, heightSize / 2 - textSize / 2)
         paint.color = circleColor
         canvas?.drawArc(RectF(0f, 0f, textSize, textSize), 0F, progressCircle * 0.365f, true,  paint)
         canvas?.restore()
     }
+
 
     private fun drawTitle(canvas: Canvas?) {
         paint.color = Color.WHITE
