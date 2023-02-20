@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
 
         val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
         downloadID =
-            downloadManager.enqueue(request)// enqueue puts the download request in the queue.
+            downloadManager.enqueue(request)
 
         val cursor = downloadManager.query(DownloadManager.Query().setFilterById(downloadID))
         if (cursor.moveToFirst()) {
