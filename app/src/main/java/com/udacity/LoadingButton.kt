@@ -7,8 +7,6 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.animation.addListener
-import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import kotlin.properties.Delegates
@@ -22,11 +20,11 @@ class LoadingButton @JvmOverloads constructor(
     private var textWidth = 0f
 
     private var textSize: Float = resources.getDimension(R.dimen.default_text_size)
-    private var circleXOffset = textSize / 2
+    private var circleOffset = textSize / 2
 
-    private lateinit var buttonTitle: String
+    private lateinit var titleButton: String
 
-    private var progressWidth = 0f
+    private var widthOfProgress = 0f
     private var progressCircle = 0f
 
     private var buttonColor = ContextCompat.getColor(context, R.color.colorPrimary)
@@ -38,21 +36,21 @@ class LoadingButton @JvmOverloads constructor(
     var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
         when(new) {
             ButtonState.Clicked -> {
-                buttonTitle = "Clicked"
+                titleButton = "Clicked"
                 invalidate()
             }
             ButtonState.Loading -> {
-                buttonTitle = resources.getString(R.string.button_loading)
+                titleButton = resources.getString(R.string.button_loading)
                 valueAnimator = ValueAnimator.ofFloat(0f, widthSize.toFloat())
                 valueAnimator.setDuration(5000)
                 valueAnimator.addUpdateListener { animation ->
-                    progressWidth = animation.animatedValue as Float
-                    progressCircle = (widthSize.toFloat()/365)*progressWidth
+                    widthOfProgress = animation.animatedValue as Float
+                    progressCircle = (widthSize.toFloat()/365)*widthOfProgress
                     invalidate()
                 }
                 valueAnimator.addListener(object : AnimatorListenerAdapter(){
                     override fun onAnimationEnd(animation: Animator?) {
-                        progressWidth = 0f
+                        widthOfProgress = 0f
                         if(buttonState == ButtonState.Loading){
                             buttonState = ButtonState.Loading
                         }
@@ -63,9 +61,9 @@ class LoadingButton @JvmOverloads constructor(
             }
             ButtonState.Completed -> {
                 valueAnimator.cancel()
-                progressWidth = 0f
+                widthOfProgress = 0f
                 progressCircle = 0f
-                buttonTitle = resources.getString(R.string.button_download)
+                titleButton = resources.getString(R.string.button_download)
                 invalidate()
             }
         }
@@ -78,7 +76,7 @@ class LoadingButton @JvmOverloads constructor(
     }
 
     init {
-        buttonTitle = "Download"
+        titleButton = "Download"
         context.withStyledAttributes(attrs, R.styleable.LoadingButton){
             buttonColor = getColor(R.styleable.LoadingButton_buttonColor, 0)
             loadingColor = getColor(R.styleable.LoadingButton_buttonLoadingColor, 0)
@@ -101,13 +99,13 @@ class LoadingButton @JvmOverloads constructor(
 
     private fun drawProgressBackground(canvas: Canvas?) {
         paint.color = loadingColor
-        canvas?.drawRect(0f, 0f, progressWidth, heightSize.toFloat(), paint)
+        canvas?.drawRect(0f, 0f, widthOfProgress, heightSize.toFloat(), paint)
     }
 
     private fun drawCircleProgress(canvas: Canvas?) {
         //TODO: Draw circle progress animation
         canvas?.save()
-        canvas?.translate(widthSize / 2 + textWidth / 2 + circleXOffset, heightSize / 2 - textSize / 2)
+        canvas?.translate(widthSize / 2 + textWidth / 2 + circleOffset, heightSize / 2 - textSize / 2)
         paint.color = circleColor
         canvas?.drawArc(RectF(0f, 0f, textSize, textSize), 0F, progressCircle * 0.365f, true,  paint)
         canvas?.restore()
@@ -115,8 +113,8 @@ class LoadingButton @JvmOverloads constructor(
 
     private fun drawTitle(canvas: Canvas?) {
         paint.color = Color.WHITE
-        textWidth = paint.measureText(buttonTitle)
-        canvas?.drawText(buttonTitle, widthSize / 2 - textWidth / 2, heightSize / 2 - (paint.descent() + paint.ascent()) / 2, paint)
+        textWidth = paint.measureText(titleButton)
+        canvas?.drawText(titleButton, widthSize / 2 - textWidth / 2, heightSize / 2 - (paint.descent() + paint.ascent()) / 2, paint)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
