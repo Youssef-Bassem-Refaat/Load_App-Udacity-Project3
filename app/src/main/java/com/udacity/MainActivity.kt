@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity() {
             .addAction(action)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-              notificationManager.notify(NOTIFICATION_ID, builder.build())
+        notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
 
     private fun createNotificationChannel() {
