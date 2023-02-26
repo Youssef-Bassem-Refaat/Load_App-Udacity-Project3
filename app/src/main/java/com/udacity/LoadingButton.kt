@@ -19,7 +19,8 @@ class LoadingButton @JvmOverloads constructor(
     private var heightSize = 0
     private var textWidth = 0f
 
-    
+    private var textSize: Float = resources.getDimension(R.dimen.text_size)
+    private var circleOffset = textSize / 2
 
     private lateinit var buttonTitle: String
 
